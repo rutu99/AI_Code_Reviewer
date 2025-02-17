@@ -1,0 +1,10 @@
+
+# Ignore virtual environment
+venv/
+__pycache__/
+
+# Ignore API keys
+.env
+
+# Ignore cache and logs
+*.log
