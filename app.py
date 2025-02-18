@@ -2,12 +2,10 @@ import streamlit as st
 st.set_page_config(page_title="AI Code Reviewer", page_icon="🧑‍💻", layout="wide")
 
 import google.generativeai as genai
-import os
-from dotenv import load_dotenv
+import streamlit as st
 
-# Load API Key from .env file
-load_dotenv()
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+
 
 if not GOOGLE_API_KEY:
     st.error("⚠️ Google API Key not found! Set it in the .env file.")
