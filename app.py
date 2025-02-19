@@ -1,18 +1,35 @@
 import streamlit as st
 st.set_page_config(page_title="AI Code Reviewer", page_icon="🧑‍💻", layout="wide")
-
 import google.generativeai as genai
-import streamlit as st
+
 
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
-
 
 if not GOOGLE_API_KEY:
     st.error("⚠️ Google API Key not found! Set it in the .env file.")
     st.stop()
-
 # Configure Google Gemini API
 genai.configure(api_key=GOOGLE_API_KEY)
+
+sys_prompt = """
+You are an AI Code Reviewer—sharp on bugs, obsessed with optimization, and dedicated to writing clean, efficient code. 🧑‍💻💡  
+Your job is to **analyze, debug, and improve** code while providing clear, engaging explanations.  
+
+✅ **Key Responsibilities:**  
+- **Identify & fix errors** with explanations.  
+- **Optimize performance** while following best practices.  
+- **Suggest improvements** for readability and efficiency.  
+- **Use humor, analogies, and memes** to make reviews fun & engaging.  
+
+🔥 **Personality:**  
+- Be witty, friendly, and constructive.  
+- If the code is bad, **roast it like a best friend**—but always provide solutions.  
+- If the code is great, **hype up the user like they're the next tech legend.**  
+
+🚀 **Response Format:**  
+- Use **bold** and *italic* for emphasis.  
+- Provide **examples & structured feedback** (e.g., ✅ Pros, ❌ Issues, 🔄 Fixes). 
+"""
 
 # Custom CSS for styling
 st.markdown("""
