@@ -1,16 +1,20 @@
 import streamlit as st
-st.set_page_config(page_title="AI Code Reviewer", page_icon="🧑‍💻", layout="wide")
 import google.generativeai as genai
 
+# Set up page config
+st.set_page_config(page_title="AI Code Reviewer", page_icon="🧑‍💻", layout="wide")
 
+# Load API Key from Streamlit Secrets
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 
 if not GOOGLE_API_KEY:
-    st.error("⚠️ Google API Key not found! Set it in the .env file.")
+    st.error("⚠️ Google API Key not found! Add it in Streamlit secrets.")
     st.stop()
+
 # Configure Google Gemini API
 genai.configure(api_key=GOOGLE_API_KEY)
 
+# AI System Prompt
 sys_prompt = """
 You are an AI Code Reviewer—sharp on bugs, obsessed with optimization, and dedicated to writing clean, efficient code. 🧑‍💻💡  
 Your job is to **analyze, debug, and improve** code while providing clear, engaging explanations.  
@@ -19,6 +23,7 @@ Your job is to **analyze, debug, and improve** code while providing clear, engag
 - **Identify & fix errors** with explanations.  
 - **Optimize performance** while following best practices.  
 - **Suggest improvements** for readability and efficiency.  
+- **If the code is perfect, respond with:** '✅ Code looks great! No issues found.'  
 - **Use humor, analogies, and memes** to make reviews fun & engaging.  
 
 🔥 **Personality:**  
@@ -28,7 +33,7 @@ Your job is to **analyze, debug, and improve** code while providing clear, engag
 
 🚀 **Response Format:**  
 - Use **bold** and *italic* for emphasis.  
-- Provide **examples & structured feedback** (e.g., ✅ Pros, ❌ Issues, 🔄 Fixes). 
+- Provide **examples & structured feedback** (e.g., ✅ Pros, ❌ Issues, 🔄 Fixes).  
 """
 
 # Custom CSS for styling
@@ -58,30 +63,21 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
-
 # Streamlit UI
-#st.set_page_config(page_title="AI Code Reviewer", page_icon="🧑‍💻", layout="wide")
-
 st.title("🔍 AI Code Reviewer")
-st.write("🚀 Get AI-powered feedback on your code now")
+st.write("🚀 Get AI-powered review on your code now")
 
 # Code Input
-code_input = st.text_area("Paste your code here:", height=200)
+code_input = st.text_area("CODE PLEASE:", height=200, placeholder="I won't judge if you paste your code here!...")
 
 # Review Button
 if st.button("Review Code 🚀"):
     if code_input.strip():
-        st.info("AI is reviewing your code... ⏳")
+        st.info("Take a Deep Breath, your code is being reviewed.... ⏳")
         
-        # AI Prompt
-        prompt = f"""
-        Review the following code, identify issues, suggest improvements, and provide a corrected version:
-        ```python
-        {code_input}
-        ```
-        """
-        
+        # AI Prompt with System Instructions
+        prompt = sys_prompt + f"\n\nHere is your code for review Darling\n```python\n{code_input}\n```"
+
         try:
             # Get AI Response
             model = genai.GenerativeModel("gemini-pro")
@@ -96,7 +92,7 @@ if st.button("Review Code 🚀"):
             st.error(f"Error: {str(e)}")
 
     else:
-        st.warning("⚠️ Please enter some code before reviewing.")
+        st.warning("⚠️ Are you kidding, I'm missing the code here..")
 
 # Footer
 st.markdown("---")
